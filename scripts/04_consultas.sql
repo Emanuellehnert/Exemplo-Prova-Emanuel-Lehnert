@@ -3,7 +3,7 @@
 -- =====================================================================
 
 -- Liste todos os setores cadastrados na fábrica.
-SELECT * FROM Setores;
+SELECT id_Setor, Nome, Localização FROM Setores;
 
 -- Liste o nome, cargo e salário de todos os funcionários.
 SELECT Nome, Cargo, Salario FROM Funcionarios;
@@ -20,23 +20,28 @@ SELECT Nome, Quantidade_estoque FROM Produtos_Industriais;
 -- =====================================================================
 
 -- Liste os funcionários admitidos após uma determinada data (Exemplo: 01/01/2021).
-SELECT * FROM Funcionarios 
+SELECT id_Funcionario, Nome, CPF, Cargo, Salario, Data_admissao, id_Setor 
+FROM Funcionarios 
 WHERE Data_admissao > '2021-01-01';
 
 -- Exiba todos os produtos cuja quantidade em estoque seja superior a 100 unidades.
-SELECT * FROM Produtos_Industriais 
+SELECT id_Produto, Codigo, Nome, Descrição, Preço, Quantidade_estoque, id_Categoria, id_Fornecedor 
+FROM Produtos_Industriais 
 WHERE Quantidade_estoque > 100;
 
 -- Liste todos os fornecedores localizados em uma cidade específica (Exemplo: 'Tocantins').
-SELECT * FROM Fornecedores 
+SELECT id_Fornecedor, Nome, CNPJ, Cidade, Telefone 
+FROM Fornecedores 
 WHERE Cidade = 'Tocantins';
 
 -- Exiba os produtos cujo preço de fabricação esteja entre R$ 50,00 e R$ 500,00.
-SELECT * FROM Produtos_Industriais 
+SELECT id_Produto, Codigo, Nome, Descrição, Preço, Quantidade_estoque, id_Categoria, id_Fornecedor 
+FROM Produtos_Industriais 
 WHERE Preço BETWEEN 50.00 AND 500.00;
 
 -- Liste os funcionários cujo salário seja superior a R$ 3.000,00.
-SELECT * FROM Funcionarios 
+SELECT id_Funcionario, Nome, CPF, Cargo, Salario, Data_admissao, id_Setor 
+FROM Funcionarios 
 WHERE Salario > 3000.00;
 
 
@@ -45,15 +50,18 @@ WHERE Salario > 3000.00;
 -- =====================================================================
 
 -- Liste os funcionários cujo cargo contenha a palavra "Operador".
-SELECT * FROM Funcionarios 
+SELECT id_Funcionario, Nome, CPF, Cargo, Salario, Data_admissao, id_Setor 
+FROM Funcionarios 
 WHERE Cargo LIKE '%Operador%';
 
 -- Exiba todos os fornecedores que possuem telefone cadastrado.
-SELECT * FROM Fornecedores 
+SELECT id_Fornecedor, Nome, CNPJ, Cidade, Telefone 
+FROM Fornecedores 
 WHERE Telefone IS NOT NULL;
 
 -- Exiba os produtos cuja descrição contenha um trecho informado (Exemplo: 'top').
-SELECT * FROM Produtos_Industriais 
+SELECT id_Produto, Codigo, Nome, Descrição, Preço, Quantidade_estoque, id_Categoria, id_Fornecedor 
+FROM Produtos_Industriais 
 WHERE Descrição LIKE '%top%';
 
 
@@ -62,15 +70,18 @@ WHERE Descrição LIKE '%top%';
 -- =====================================================================
 
 -- Exiba todos os produtos ordenados pelo nome em ordem alfabética.
-SELECT * FROM Produtos_Industriais 
+SELECT id_Produto, Codigo, Nome, Descrição, Preço, Quantidade_estoque, id_Categoria, id_Fornecedor 
+FROM Produtos_Industriais 
 ORDER BY Nome ASC;
 
 -- Liste todos os produtos ordenados pelo preço de fabricação em ordem decrescente.
-SELECT * FROM Produtos_Industriais 
+SELECT id_Produto, Codigo, Nome, Descrição, Preço, Quantidade_estoque, id_Categoria, id_Fornecedor 
+FROM Produtos_Industriais 
 ORDER BY Preço DESC;
 
 -- Exiba as ordens de produção com status "Concluída".
-SELECT * FROM Ordens_de_produção 
+SELECT id_Ordem, id_Produto, Data_produção, Quantidade, Tempo_estimado, Tempo_real, Status_produção, id_Funcionario 
+FROM Ordens_de_produção 
 WHERE Status_produção = 'Concluido';
 
 
@@ -79,7 +90,7 @@ WHERE Status_produção = 'Concluido';
 -- =====================================================================
 
 -- Exiba a quantidade total de funcionários cadastrados na empresa.
-SELECT COUNT(*) AS Total_Funcionarios FROM Funcionarios;
+SELECT COUNT(id_Funcionario) AS Total_Funcionarios FROM Funcionarios;
 
 -- Apresente o salário médio dos funcionários.
 SELECT AVG(Salario) AS Salario_Medio FROM Funcionarios;
@@ -88,12 +99,12 @@ SELECT AVG(Salario) AS Salario_Medio FROM Funcionarios;
 SELECT MIN(Preço) AS Menor_Preço FROM Produtos_Industriais;
 
 -- Apresente a quantidade de produtos cadastrados em cada categoria.
-SELECT id_Categoria, COUNT(*) AS Qtd_Produtos 
+SELECT id_Categoria, COUNT(id_Produto) AS Qtd_Produtos 
 FROM Produtos_Industriais 
 GROUP BY id_Categoria;
 
 -- Exiba a quantidade de ordens de produção cadastradas por funcionário responsável.
-SELECT id_Funcionario, COUNT(*) AS Qtd_Ordens 
+SELECT id_Funcionario, COUNT(id_Ordem) AS Qtd_Ordens 
 FROM Ordens_de_produção 
 GROUP BY id_Funcionario;
 
@@ -123,9 +134,11 @@ INNER JOIN Fornecedores ON Produtos_Industriais.id_Fornecedor = Fornecedores.id_
 -- =====================================================================
 
 -- Exiba o(s) produto(s) que possuem o maior preço de fabricação cadastrado.
-SELECT * FROM Produtos_Industriais 
+SELECT id_Produto, Codigo, Nome, Descrição, Preço, Quantidade_estoque, id_Categoria, id_Fornecedor 
+FROM Produtos_Industriais 
 WHERE Preço = (SELECT MAX(Preço) FROM Produtos_Industriais);
 
 -- Liste os funcionários cujo salário seja superior ao salário médio dos funcionários da empresa.
-SELECT * FROM Funcionarios 
+SELECT id_Funcionario, Nome, CPF, Cargo, Salario, Data_admissao, id_Setor 
+FROM Funcionarios 
 WHERE Salario > (SELECT AVG(Salario) FROM Funcionarios);
